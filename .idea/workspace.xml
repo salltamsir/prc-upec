@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f9c4629-6511-4338-a9e4-9be25d0b7352" name="Default Changelist" comment="" />
+    <list default="true" id="9f9c4629-6511-4338-a9e4-9be25d0b7352" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -66,7 +68,7 @@
         <entry file="file://$PROJECT_DIR$/src/model/Peer.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="405">
-              <caret line="59" column="43" lean-forward="true" selection-start-line="59" selection-end-line="60" />
+              <caret line="59" column="43" selection-start-line="59" selection-end-line="60" />
               <folding>
                 <element signature="e#489#490#0" expanded="true" />
                 <element signature="e#522#523#0" expanded="true" />
@@ -220,7 +222,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553380369929" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553380798765" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
@@ -260,12 +262,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1553255904368</updated>
-      <workItem from="1553255909351" duration="25245000" />
+      <workItem from="1553255909351" duration="25553000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25245000" />
+    <option name="totallyTimeSpent" value="25553000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="812" extended-state="0" />
@@ -404,7 +406,7 @@
     <entry file="file://$PROJECT_DIR$/src/model/Peer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
-          <caret line="59" column="43" lean-forward="true" selection-start-line="59" selection-end-line="60" />
+          <caret line="59" column="43" selection-start-line="59" selection-end-line="60" />
           <folding>
             <element signature="e#489#490#0" expanded="true" />
             <element signature="e#522#523#0" expanded="true" />
