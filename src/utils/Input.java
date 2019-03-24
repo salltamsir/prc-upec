@@ -46,6 +46,7 @@ public class Input {
             case 6 :
                 System.out.println("id=6");
                 getFiles();
+                break;
             case 8 :
                 System.out.println("id=8");
                 getFragment();
@@ -73,7 +74,7 @@ public class Input {
     public void getFiles(){
         System.out.println("Files : ");
         int n= readInt();
-        for(int i=0;i<=n;++i){
+        for(int i=0;i<n;++i){
             String file= readString();
             long size= readLong();
             System.out.println("Received File: "+file+" Size: "+size);
@@ -83,7 +84,7 @@ public class Input {
     public void getPeers(){
         System.out.println("Peers");
         int n= readInt();
-        for(int i=0;i<=n;++i){
+        for(int i=0;i<n;++i){
             int port= readInt();
             String pair= readString();
             System.out.println("Port: "+port+" Peer: "+pair);

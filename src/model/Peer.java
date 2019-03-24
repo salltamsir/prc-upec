@@ -36,12 +36,15 @@ public class Peer {
 
     public void sendMessage (String url, String message){
         this.connections.get(url).sendMessage(message);
+        this.connections.get(url).listen();
     }
 
 
 
     public void sendPort(String url, int port){
         this.connections.get(url).sendPort(port);
+        this.connections.get(url).listen();
+
     }
 
     /* Requesting  */
@@ -49,6 +52,7 @@ public class Peer {
     public void requestPeers(String url){
         this.connections.get(url).requestPeers();
         this.connections.get(url).listen();
+
     }
 
     public void requestFiles(String url){
