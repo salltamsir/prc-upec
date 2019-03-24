@@ -66,7 +66,9 @@ public class Fenetre extends JFrame {
         });
         b2.addActionListener(e -> {
             if (!(peer.equals(null))){
-                peer.askFileList(jTextField5.getText());
+               // peer.requestPeers(jTextField5.getText());
+                //peer.sendPort("prog-reseau-m1.lacl.fr",6666);
+                peer.requestFragment("prog-reseau-m1.lacl.fr","smalfile.png",65,87,76);
             }
         });
 

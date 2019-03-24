@@ -4,8 +4,6 @@ import channel.Client;
 import channel.Server;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
 import java.util.TreeMap;
 
 public class Peer {
@@ -23,9 +21,6 @@ public class Peer {
         return connections;
     }
 
-    public Server getServer(){
-        return server;
-    }
 
     public void addConnection(String url, int port ){
         try {
@@ -37,33 +32,36 @@ public class Peer {
         }
     }
 
-    public void sendMess (String url, String message){
-        //SocketChannel socketChannel = this.connections.get(url).getSocketChannel();
+    /* Sending infos */
+
+    public void sendMessage (String url, String message){
         this.connections.get(url).sendMessage(message);
     }
 
-    public void sendPeerList(String url){
-        this.connections.get(url).sendPeersList(this.connections.values());
+    public void sendPeers(String url){
+        this.connections.get(url).sendPeers(this.connections.values());
     }
 
     public void sendPort(String url, int port){
         this.connections.get(url).sendPort(port);
     }
 
-    public void askPeerList(String url){
-        this.connections.get(url).askPeerList();
+    /* Requesting  */
 
-    }
-
-    public void askFileList(String url){
-        this.connections.get(url).askFileList();
+    public void requestPeers(String url){
+        this.connections.get(url).requestPeers();
         this.connections.get(url).listen();
-
     }
 
-    public void getFilesList(String url){
-        this.connections.get(url).getFilesList();
-
+    public void requestFiles(String url){
+        this.connections.get(url).requestFiles();
+        this.connections.get(url).listen();
     }
+    public void requestFragment(String url,String name, long totalSize, long pos, int size){
+        this.connections.get(url).requestFragment(name,totalSize,pos,size);
+        this.connections.get(url).listen();
+    }
+
+
 
 }

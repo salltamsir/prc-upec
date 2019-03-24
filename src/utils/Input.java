@@ -3,15 +3,12 @@ package utils;
 
 import model.Peer;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
 
 public class Input {
 
     int port;
-    private int capacity = 65536;
-    private ByteBuffer byteBuffer = ByteBuffer.allocate(capacity);
+    private ByteBuffer byteBuffer ;
     private Output out;
     private Peer peer;
 
@@ -27,29 +24,31 @@ public class Input {
         out = new Output();
     }
 
-    public void newMsg(SocketChannel socket) {
+    public void readInfo() {
         byteBuffer.flip();
         byte id;
         id = byteBuffer.get();
-        System.out.println(id+" retour "+id);
         switch (id){
             case 1 :
-                getMsg(socket);
+                getMessage();
                 System.out.println("id = 1");
                 break;
             case 2 :
-                getPort(socket);
+                getPort();
                 System.out.println("id = 2");
                 break;
             case 3 :
                 System.out.println("id = 3");
-                //out.sendPeersList(socket,peer.getConnections().values());
             case 4 :
                 System.out.println("id = 4");
+                getPeers();
                 break;
             case 6 :
                 System.out.println("id=6");
-                getFilesList(socket);
+                getFiles();
+            case 8 :
+                System.out.println("id=8");
+                getFragment();
 
 
         }
@@ -57,82 +56,87 @@ public class Input {
         byteBuffer.clear();
     }
 
-    void getMsg(SocketChannel socket) {
-        String sto = getString(socket);
+
+    public void getMessage() {
+        String sto = readString();
         System.out.println("le message issu du serveur: " + sto);
 
     }
 
-    void getPort(SocketChannel socket){
-        System.out.println("Réception du numéro de port");
-        int port=getInt();
+    public void getPort(){
+        int port= readInt();
         System.out.println("Port: "+port);
     }
 
-    void getPeersList(SocketChannel socket){
-        System.out.println("Réception de la liste des pairs");
-        int n=getInt();
-        System.out.println("Nombre de pairs :"+n);
-        while(n>0){
-            int port=getInt();
-            String pair=getString(socket);
-            System.out.println("Port: "+port+" Pair: "+pair);
-            n--;
+
+
+    public void getFiles(){
+        System.out.println("Files : ");
+        int n= readInt();
+        for(int i=0;i<=n;++i){
+            String file= readString();
+            long size= readLong();
+            System.out.println("Received File: "+file+" Size: "+size);
         }
-        System.out.println("End");
     }
 
-    public void getFilesList(SocketChannel socketChannel){
-        System.out.println("Réception de la liste des fichiers");
-        int n=getInt();
-        System.out.println("nom du fichier : "+n+" lettres");
-        while(n>0){
-            String file=getString(socketChannel);
-            long size=getLong();
-            System.out.println("Fichier: "+file+" Taille: "+size);
-            n--;
+    public void getPeers(){
+        System.out.println("Peers");
+        int n= readInt();
+        for(int i=0;i<=n;++i){
+            int port= readInt();
+            String pair= readString();
+            System.out.println("Port: "+port+" Peer: "+pair);
         }
-        System.out.println("End");
+
     }
 
-    String getString(SocketChannel socket){
+    public void getFragment(){
+        String fileName= readString();
+        long totalSize= readLong();
+        long position= readLong();
+        int size= readInt();
+        System.out.println("Nalme  : "+fileName+"Total size : "+totalSize+"position : "+position+" size :"+size);
+
+    }
+
+
+    /* String long int */
+
+    public String readString(){
         try {
-            int i=0;
-            int taille=getInt();
-            byte[] bytes=new byte[taille];
-            while(i<taille ){
+            int size= readInt();
+            byte[] bytes=new byte[size];
+            for(int i=0;i<size;++i){
                 bytes[i]=byteBuffer.get();
-                i++;
             }
+
             return new String(bytes);
         } catch(java.nio.BufferUnderflowException e){
-            System.out.println("Buffer under flow exception");
+            System.out.println("BufferUnderflowException");
         }
-        return "Erreur lors de la récupération de la chaine!!!";
+        return "Eroor";
     }
 
-    int getInt(){
-        byte[] val=new byte[4];
-        int i=0;
-        while(i<4){
-            val[i]=byteBuffer.get();
-            i++;
+    public int readInt(){
+        byte[] bytes=new byte[4];
+        for(int i=0;i<4;++i){
+            bytes[i]=byteBuffer.get();
         }
-        return ByteBuffer.wrap(val).getInt();
+        return ByteBuffer.wrap(bytes).getInt();
     }
 
-    long getLong(){
-        byte[] val=new byte[8];
+    public long readLong(){
+        byte[] bytes=new byte[8];
         try {
-            int i=0;
-            while(i<8 ){
-                val[i]=byteBuffer.get();
-                i++;
+            for(int i=0;i<8;++i){
+                bytes[i]=byteBuffer.get();
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ByteBuffer.wrap(val).getLong();
+        return ByteBuffer.wrap(bytes).getLong();
     }
 
 

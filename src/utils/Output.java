@@ -7,15 +7,12 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 public class Output {
 
     private Charset charset=Charset.forName("UTF-8");
-    private ByteBuffer buff= ByteBuffer.allocate(65536);
+    private ByteBuffer byteBuffer = ByteBuffer.allocate(65536);
     Peer peer;
 
     public Output (){
@@ -27,60 +24,63 @@ public class Output {
     }
 
 
-    public void sendMsg(SocketChannel socket, String msg){
-        buff.clear();
-        buff.put((byte)1);
+    /* Send infos */
+    public void sendMessage(SocketChannel socketChannel, String msg){
+        byteBuffer.clear();
+        byteBuffer.put((byte)1);
         ByteBuffer b=charset.encode(msg);
-        buff.putInt(b.remaining());
-        buff.put(b);
-        buff.clear();
-        send(socket);
+        byteBuffer.putInt(b.remaining());
+        byteBuffer.put(b);
+        byteBuffer.clear();
+        write(socketChannel);
     }
 
     public void sendPort(SocketChannel socketChannel, int port){
-        buff.clear();
-        buff.put((byte)2);
-        buff.putInt(port);
-        buff.flip();
-        send(socketChannel);
-    }
-
-    public void askPeerList(SocketChannel socketChannel){
-        System.out.println("Demande de la liste des pairs");
-        buff.clear();
-        buff.put((byte)3);
-        buff.flip();
-        send(socketChannel);
-    }
-
-    public void sendPeersList(SocketChannel socket, Collection<Client> peers){
-        buff.clear();
-        buff.clear();
-        buff.put((byte)4);
-        buff.putInt(peers.size());
-        peers.stream().forEach(peer->{
-            buff.putInt(peer.getDestPort());
-            ByteBuffer b=charset.encode(peer.getDestUrl());
-            buff.putInt(b.remaining());
-            buff.put(b);
-
-        });
-        buff.flip();
-        send(socket);
-    }
-
-    public void askFileList(SocketChannel socket){
-        buff.clear();
-        buff.put((byte)5);
-        buff.flip();
-        send(socket);
+        byteBuffer.clear();
+        byteBuffer.put((byte)2);
+        byteBuffer.putInt(port);
+        byteBuffer.flip();
+        write(socketChannel);
     }
 
 
 
-    void send(SocketChannel s){
+    /* Send request */
+    public void requestPeers(SocketChannel socketChannel){
+        byteBuffer.clear();
+        byteBuffer.put((byte)3);
+        byteBuffer.flip();
+        write(socketChannel);
+    }
+
+    public void requestFiles(SocketChannel socketChannel){
+        byteBuffer.clear();
+        byteBuffer.put((byte)5);
+        byteBuffer.flip();
+        write(socketChannel);
+    }
+
+    public void requestFragment(SocketChannel socketChannel, String fileName, long totalSize, long start, int fragmentSize){
+        System.out.println(socketChannel.socket().getInetAddress().getHostName()+socketChannel.socket().getPort()+" "+start);
+        byteBuffer.clear();
+        byteBuffer.put((byte)7);
+        ByteBuffer b=charset.encode(fileName);
+        byteBuffer.putInt(b.remaining());
+        byteBuffer.put(b);
+        byteBuffer.putLong(totalSize);
+        byteBuffer.putLong(start);
+        byteBuffer.putInt(fragmentSize);
+        byteBuffer.flip();
+        write(socketChannel);
+    }
+
+
+
+    /* Others */
+
+    void write(SocketChannel socketChannel){
         try {
-            s.write(buff);
+            socketChannel.write(byteBuffer);
         } catch (IOException e) {
             e.printStackTrace();
         }

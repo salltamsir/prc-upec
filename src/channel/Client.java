@@ -8,7 +8,6 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-import java.nio.charset.Charset;
 import java.util.Collection;
 
 public class Client {
@@ -44,19 +43,13 @@ public class Client {
 
     }
 
-    public String getDestUrl(){
-        return destUrl;
-    }
-    public int getDestPort(){
-        return destPort;
-    }
 
     public  void listen(){
         try {
             int n = socketChannel.read(byteBuffer);
             if(n>0){
                 System.out.println("qq chose est arrive dans le buffer "+n);
-                this.input.newMsg(socketChannel);
+                this.input.readInfo();
 
             }
         } catch (IOException e) {
@@ -65,43 +58,51 @@ public class Client {
 
     }
 
-
+    /* Sending information */
     public void sendMessage (String s){
-        output.sendMsg(socketChannel,s);
+        output.sendMessage(socketChannel,s);
     }
+
     public void sendPort(int port){
         output.sendPort(socketChannel,port);
     }
-    public void sendPeersList(Collection<Client> peers){
-        this.output.sendPeersList(socketChannel, peers);
-    }
-    public void askPeerList(){
-        output.askPeerList(socketChannel);
-    }
-    public void askFileList(){
-        output.askFileList(socketChannel);
-    }
-    public void getFilesList(){
-        input.getFilesList(this.socketChannel);
-    }
-
-    /*public void run(){
-        while (isConnected){
-            try {
-                int n = socketChannel.read(byteBuffer);
-                byteBuffer.flip();
-                if(n>=0)
-                input.newMsg(socketChannel);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
 
-        }
-    } */
 
-    public SocketChannel getSocketChannel(){
-        return socketChannel;
+    /* Requesting */
+
+    public void requestPeers(){
+        output.requestPeers(socketChannel);
+    }
+
+    public void requestFiles(){
+        output.requestFiles(socketChannel);
+    }
+
+    public void requestFragment(String name, long totalSize, long pos, int size){
+        this.output.requestFragment(socketChannel,"smallfile.png",6148,10,600);
+    }
+
+
+
+
+
+    /* Getters and Setters */
+
+    public int getDestPort() {
+        return destPort;
+    }
+
+    public void setDestPort(int destPort) {
+        this.destPort = destPort;
+    }
+
+    public String getDestUrl() {
+        return destUrl;
+    }
+
+    public void setDestUrl(String destUrl) {
+        this.destUrl = destUrl;
     }
 
 

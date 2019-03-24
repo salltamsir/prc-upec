@@ -1,6 +1,5 @@
 package channel;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import utils.Input;
 
 import java.io.IOException;
@@ -80,17 +79,7 @@ public class Server extends Thread{ ;
         }
         buffer.flip();
         System.out.println("message recu");
-        input.newMsg(client);
-        /*int n = client.read(buffer);
-        if (n<0){
-            key.cancel();
-            client.close();
-            System.out.println("Deconnexion");
-            return;
-        }
-        //buffer.flip();
-        buffer.clear();
-        System.out.println("message au serveur"); */
+        input.readInfo();
 
     }
 
