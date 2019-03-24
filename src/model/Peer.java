@@ -38,9 +38,7 @@ public class Peer {
         this.connections.get(url).sendMessage(message);
     }
 
-    public void sendPeers(String url){
-        this.connections.get(url).sendPeers(this.connections.values());
-    }
+
 
     public void sendPort(String url, int port){
         this.connections.get(url).sendPort(port);
